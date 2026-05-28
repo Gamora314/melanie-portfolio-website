@@ -16,14 +16,14 @@ const GalleryPreview = () => {
       title: "The Writer",
       subtitle: "Cinematic Scripts & Moving Pictures",
       description: "Screenplays, embedded screen-grabs, and video links diving deep into human narratives and structural storytelling.",
-      image: "/images/Dinuguan.JPG", 
+      image: "/images/Dinuguan.png", 
       link: "/gallery?open=writer" // 💡 LINK UPDATED: Direct target
     },
     {
       title: "The Poet",
       subtitle: "Poems",
       description: "The untold stories the explores love, life, memories, and everything in between that makes us human.",
-      image: "/images/imetsomeone.JPG", 
+      image: "/images/imetsomeone.png", 
       link: "/gallery?open=final" // 💡 LINK UPDATED: Matches 'final' key in gallery layout
     }
   ]
