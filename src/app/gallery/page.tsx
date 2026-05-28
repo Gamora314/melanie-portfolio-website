@@ -26,7 +26,7 @@ const writerProjects = [
     desc: "Faced with soaring inflation, a mother sacrifices her own limb to feed her starving family in a social realism short film that explores poverty, desperation, and the continuous decline of the Philippine economy.",
     roles: "Screenwriter, Director, & Actor",
     link: "https://drive.google.com/file/d/1lBP_FIHXH9_8ISjKy6D77JptAloHxLPu/view?usp=drive_link",
-    image: "/images/Dinuguan.jpg",
+    image: "/images/Dinuguan.JPG",
     pitchDeck: [
       "/images/Dinuguan Pitch Deck/1.jpg",
       "/images/Dinuguan Pitch Deck/2.jpg",
