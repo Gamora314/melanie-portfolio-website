@@ -22,7 +22,7 @@ const GalleryPreview = () => {
     {
       title: "The Poet",
       subtitle: "Poems",
-      description: "The untold stories the explores love, life, memories, and everything in between that makes us human.",
+      description: "The untold stories that explores love, life, memories, and everything in between that makes us human.",
       image: "/images/imetsomeone.png", 
       link: "/gallery?open=final" // 💡 LINK UPDATED: Matches 'final' key in gallery layout
     }

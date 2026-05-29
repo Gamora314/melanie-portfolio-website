@@ -10,9 +10,9 @@ const observerProjects = [
   { title: "Ngiting Walang Katumbas", category: "Highlights", desc: "1st Place - CIIT Inspirare Photo Contest. This was captured during a community feeding program. It serves as a gentle reminder that profound hope and happiness are often found in the simplest, most fleeting moments.", image: "/images/Ngiting Walang Katumbas.jpg" },
   { title: "Sisterly Love", category: "Highlights", desc: "Set against the chaotic backdrop of a community feeding program, this photograph isolates a binding, incomparable sisterly bond. It captures the raw essence of having a lifelong safe sapce - a dedicated anchor you can always count on.", image: "/images/Sisterly Love.jpg" },
   { title: "Walang Nangyari!", category: "Highlights", desc: "Inspired by the three wise monkeys, this photography finals project explores the crushing reality of forced helplessness, fear, and the complex reality of being both a witness and a victim trapped in a silencing situation.", image: "/images/Walang Nangyari!.jpg" },
-  { title: "Uhaw sa Biyaya", category: "Volunteer Work", desc: "Shot during a Simbang Gabi in a local chapel. This captures the things we do for even just a drop of hope, praying it will finally be granted", image: "/images/carousel-3.jpg" },
+  { title: "Uhaw sa Biyaya", category: "Volunteer Work", desc: "Shot during a Simbang Gabi in a local chapel. This captures the things we do for even just a drop of hope, praying it will finally be granted.", image: "/images/carousel-3.jpg" },
   { title: "Senakulo 2024", category: "Volunteer Work", desc: " A dramatic, localized visual documentation capturing the intensity and devotion of the Holy Family Chapel’s annual Lenten reenactment of the Passion of Christ.", image: "/images/The Passion Play 2024.png" },
-  { title: "Senakulo 2026", category: "Volunteer Work", desc: "A continued visual documentation and reenactment of the final days of Jesus Christ, presented by the Holy Family Chapel - Violago", image: "/images/The Passion Play 2026.png" },
+  { title: "Senakulo 2026", category: "Volunteer Work", desc: "A continued visual documentation and reenactment of the final days of Jesus Christ, presented by the Holy Family Chapel - Violago.", image: "/images/The Passion Play 2026.png" },
   { title: "CIIT SportsFest Year 11", category: "Volunteer Work", desc: "High-energy action coverage captured as a volunteer photographer for the official student publication, spanning the intense emotional highs of everything from badminton and moonboarding to focused board game strategies.", image: "/images/SportsFest Year 11.png" },
   { title: "Blessed To Be With You", category: "Travel", desc: "Side by side, we hold hands and never let go, together striking the shrine bell that brings everlasting luck and fortune... just like our love. This intimate frame stands as a visual testament to an enduring connection built to last a lifetime.", image: "/images/Blessed To Be With You.jpg" },
   { title: "Beyond The Torri", category: "Travel", desc: "As we walk beyond the realm of the spirits, we leave our worries behind. It captures the moment of crossing a holy threshold to be reborn once more.", image: "/images/Beyond The Torri.jpg" },
@@ -267,7 +267,7 @@ function GalleryContent() {
                   <div className="p-6 md:pl-0 flex flex-col justify-center flex-grow">
                     <div><span className="text-[10px] font-mono bg-orange-500/10 text-orange-400 px-2.5 py-1 rounded-full uppercase tracking-wider">{proj.category}</span></div>
                     <h3 className="text-xl font-bold mt-3 text-[#F4F1EA] group-hover:text-orange-500 transition-colors">{proj.title}</h3>
-                    <p className="text-sm text-[#F4F1EA]/70 mt-2 font-light line-clamp-2">{proj.desc}</p>
+                    <p className="text-sm text-[#F4F1EA]/70 mt-2 font-light">{proj.desc}</p>
                   </div>
                 </div>
               ))}
@@ -280,6 +280,7 @@ function GalleryContent() {
           <button onClick={() => toggleSection('writer')} className="w-full flex items-center justify-between text-left group py-4">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight group-hover:text-orange-500 transition-colors">The Writer</h2>
+              <p className="text-xs text-[#F4F1EA]/40 mt-1 uppercase tracking-widest">Cinematic Scripts & Moving Pictures</p>
             </div>
             <ChevronDownIcon className={`w-6 h-6 text-[#F4F1EA]/40 transition-transform duration-300 ${openSections.writer ? 'rotate-180 text-orange-500' : ''}`} />
           </button>
@@ -293,7 +294,7 @@ function GalleryContent() {
                   </div>
                   <div className="p-6 md:pl-0 flex flex-col justify-center flex-grow">
                     <h3 className="text-xl font-bold text-[#F4F1EA] group-hover:text-orange-500 transition-colors">{proj.title}</h3>
-                    <p className="text-sm text-[#F4F1EA]/70 mt-2 font-light line-clamp-2">{proj.desc}</p>
+                    <p className="text-sm text-[#F4F1EA]/70 mt-2 font-light">{proj.desc}</p>
                     <p className="text-xs text-[#F4F1EA]/40 mt-3"><strong className="text-[#F4F1EA]/60 font-medium">Role:</strong> {proj.roles}</p>
                   </div>
                 </div>
@@ -307,7 +308,7 @@ function GalleryContent() {
           <button onClick={() => toggleSection('final')} className="w-full flex items-center justify-between text-left group py-4">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight group-hover:text-orange-500 transition-colors">The Poet</h2>
-              <p className="text-xs text-[#F4F1EA]/40 mt-1 uppercase tracking-widest">Poems &amp; Poems</p>
+              <p className="text-xs text-[#F4F1EA]/40 mt-1 uppercase tracking-widest">Poems</p>
             </div>
             <ChevronDownIcon className={`w-6 h-6 text-[#F4F1EA]/40 transition-transform duration-300 ${openSections.final ? 'rotate-180 text-orange-500' : ''}`} />
           </button>
@@ -322,7 +323,7 @@ function GalleryContent() {
                   <div className="p-6 md:pl-0 flex flex-col justify-center flex-grow">
                     <div><span className="text-[10px] font-mono bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded-full uppercase tracking-wider">{proj.category}</span></div>
                     <h3 className="text-xl font-bold mt-3 text-[#F4F1EA] group-hover:text-orange-500 transition-colors">{proj.title}</h3>
-                    <p className="text-sm text-[#F4F1EA]/70 mt-2 font-light line-clamp-2">{proj.desc}</p>
+                    <p className="text-sm text-[#F4F1EA]/70 mt-2 font-light">{proj.desc}</p>
                   </div>
                 </div>
               ))}
