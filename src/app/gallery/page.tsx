@@ -66,15 +66,6 @@ const writerProjects = [
     youtubeId: "_BRBfjTyV0M"
   },
   {
-    title: "Scene Recreation - Black Mirror's Shut Up & Dance",
-    category: "Scene Recreation",
-    desc: "A cinematography output where we recreate a scene from any film or series to learn about how composition, lighting, and angles tells a compelling story.",
-    roles: "Director, & Color Grader",
-    link: "https://youtu.be/14nWiCGdieo",
-    image: "https://img.youtube.com/vi/14nWiCGdieo/maxresdefault.jpg",
-    youtubeId: "14nWiCGdieo"
-  },
-  {
     title: "Anak, Pag-Ibig, at Pag-Uwi",
     category: "A Screenplay Excerpt & Production Design Study",
     desc: "Set in 1990s Quezon City, this dramatic screenplay excerpt and physical diorama production study follows Jeric, a soon-to-be father who makes a desperate attempt to chase a better life abroad after being inspired by his mother’s sacrifices as an OFW.",
