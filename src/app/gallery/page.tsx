@@ -25,21 +25,27 @@ const writerProjects = [
     category: "Short Film",
     desc: "Faced with soaring inflation, a mother sacrifices her own limb to feed her starving family in a social realism short film that explores poverty, desperation, and the continuous decline of the Philippine economy.",
     roles: "Screenwriter, Director, & Actor",
-    link: "https://drive.google.com/file/d/1lBP_FIHXH9_8ISjKy6D77JptAloHxLPu/view?usp=drive_link",
-    image: "/images/Dinuguan.png",
-    pitchDeck: [
-      "/images/Dinuguan Pitch Deck/1.jpg",
-      "/images/Dinuguan Pitch Deck/2.jpg",
-      "/images/Dinuguan Pitch Deck/3.jpg",
-      "/images/Dinuguan Pitch Deck/4.jpg",
-      "/images/Dinuguan Pitch Deck/5.jpg",
-      "/images/Dinuguan Pitch Deck/6.jpg",
-      "/images/Dinuguan Pitch Deck/7.jpg",
-      "/images/Dinuguan Pitch Deck/8.jpg",
-      "/images/Dinuguan Pitch Deck/9.jpg",
-      "/images/Dinuguan Pitch Deck/10.jpg",
-      "/images/Dinuguan Pitch Deck/11.jpg"
-    ]
+    link: "https://youtu.be/h_kfbWU-xUg",
+    image: "https://img.youtube.com/vi/h_kfbWU-xUg/maxresdefault.jpg",
+    youtubeId: "h_kfbWU-xUg"
+  },
+  {
+    title: "ERASED",
+    category: "Short Experimental Film",
+    desc: "A 2-mins short film using only 36 still frames. It's about a man who is suffering from a traumatic experience, and tries to erase each body part that his father touched as he slowly fades from existence.",
+    roles: "Screenwriter, & Director",
+    link: "https://youtu.be/M7_xO8ZAAWM",
+    image: "https://img.youtube.com/vi/M7_xO8ZAAWM/maxresdefault.jpg",
+    youtubeId: "M7_xO8ZAAWM"
+  },
+  {
+    title: "Tracing The Man He Was",
+    category: "Short Documentary Film",
+    desc: "A personal documentary film about a daughter's journey to reconnect with her father through the memories he left behind.",
+    roles: "Researcher, & Director",
+    link: "https://youtu.be/3Ytb0fhNmbw",
+    image: "https://img.youtube.com/vi/3Ytb0fhNmbw/maxresdefault.jpg",
+    youtubeId: "3Ytb0fhNmbw"
   },
   {
     title: "Multo - Cup of Joe: Student Made Music Video",
@@ -48,18 +54,7 @@ const writerProjects = [
     roles: "Co-Screenwriter, Cinematographer, Cam Op, & Video Editor",
     link: "https://youtu.be/yTXuvr6WABI",
     image: "https://img.youtube.com/vi/yTXuvr6WABI/maxresdefault.jpg",
-    youtubeId: "yTXuvr6WABI",
-    pitchDeck: [
-      "/images/Multo Pitch Deck/1.jpg",
-      "/images/Multo Pitch Deck/2.jpg",
-      "/images/Multo Pitch Deck/3.jpg",
-      "/images/Multo Pitch Deck/4.jpg",
-      "/images/Multo Pitch Deck/5.jpg",
-      "/images/Multo Pitch Deck/6.jpg",
-      "/images/Multo Pitch Deck/7.jpg",
-      "/images/Multo Pitch Deck/8.jpg",
-      "/images/Multo Pitch Deck/9.jpg"
-    ]
+    youtubeId: "yTXuvr6WABI"
   },
   {
     title: "Alt + F4 - 100 Sec Film",
@@ -69,6 +64,15 @@ const writerProjects = [
     link: "https://youtu.be/_BRBfjTyV0M",
     image: "https://img.youtube.com/vi/_BRBfjTyV0M/maxresdefault.jpg",
     youtubeId: "_BRBfjTyV0M"
+  },
+  {
+    title: "Scene Recreation - Black Mirror's Shut Up & Dance",
+    category: "Scene Recreation",
+    desc: "A cinematography output where we recreate a scene from any film or series to learn about how composition, lighting, and angles tells a compelling story.",
+    roles: "Director, & Color Grader",
+    link: "https://youtu.be/14nWiCGdieo",
+    image: "https://img.youtube.com/vi/14nWiCGdieo/maxresdefault.jpg",
+    youtubeId: "14nWiCGdieo"
   },
   {
     title: "Anak, Pag-Ibig, at Pag-Uwi",
