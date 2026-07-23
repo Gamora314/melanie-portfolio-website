@@ -26,5 +26,15 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Google Sans", sans-serif;
+  font-family: 'Courier Prime', monospace;
 }
+
+@keyframes slowFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float-col-1 { animation: slowFloat 7s ease-in-out infinite; }
+.animate-float-col-2 { animation: slowFloat 9s ease-in-out infinite; }
+.animate-float-col-3 { animation: slowFloat 8s ease-in-out infinite; }
+
