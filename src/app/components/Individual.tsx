@@ -24,10 +24,10 @@ const individualProjects: Project[] = [
     number: "I-01",
     title: "Ma, Ano Ulam?",
     type: "PITCH DECK",
-    tagline: "A kid pleads for a different meal  other than a can of sardines, only to understand the hardship of parenthood.",
+    tagline: "A kid pleads for a different meal other than a can of sardines, only to understand the hardship of parenthood.",
     theme: [
       "A social realism narrative that exposes the normalized habits families adopt to survive financial hardship.",
-      "The original photographs anchor the narrative visually, creating a mirror that forces the audience to feel like they are looking directly at their own lives."
+      "The original pitch deck anchors the narrative visually, creating a mirror that forces the audience to feel like they are looking directly at their own lives."
     ],
     images: [
       "/images/Ma, Ano Ulam/1.png",
@@ -50,27 +50,39 @@ const individualProjects: Project[] = [
   {
     id: "project-2",
     number: "I-02",
-    title: "UHAW SA BIYAYA",
-    type: "PHOTOGRAPH",
-    tagline: "An image that explores human deperation.",
+    title: "BELO MEN - AD CAMPAIGN",
+    type: "PITCH DECK",
+    tagline: "An ad campaign proposal redefining modern masculinity by celebrating men who break social standards through fashion.",
     theme: [
-      "Throught observational photoragphy, the image encapsulates an empathetic, raw look at how people in difficult circumstances reach out for anything — a sliver of hope, a drop of comfort, a blessing — just to keep going.",
+      "Men with unique styles are often ridiculed or dismissed for not fitting traditional standards of masculinity.",
+      "However, historically, items now labeled as feminine — such as makeup, heels, and skirts — were originally crafted for men. Self-expression has always belonged to everyone.",
+      "'You BELOng' celebrates men who redefine fashion through a guerrilla runway show and social media campaign, proving that confidence belongs to those who own who they are."
     ],
-    images: ["/images/Uhaw Sa Biyaya.png"],
-    isPortrait: false
-  },
-  {
-    id: "project-3",
-    number: "I-03",
-    title: "NGITING WALANG KATUMBAS",
-    type: "PHOTOGRAPH",
-    tagline: "It documents the peak of resilient human joy amidst a chaotic backdrop.",
-    theme: [
-      "1st place - Inspirare Photograhy Contest.",
-      "Using observational photography and natural light, the composition deliberately enhances color and light to isolate the subjects from their crowded, gritty environment.",
-      "It serves as a gentle reminder that profound hope and happiness are often found in the simplest moments."
+    images: [
+      "/images/Belo Men/1.jpg", // Adjust path to match your actual images directory if needed
+      "/images/Belo Men/2.jpg",
+      "/images/Belo Men/3.jpg",
+      "/images/Belo Men/4.jpg",
+      "/images/Belo Men/5.jpg",
+      "/images/Belo Men/6.jpg",
+      "/images/Belo Men/7.jpg",
+      "/images/Belo Men/8.jpg",
+      "/images/Belo Men/9.jpg",
+      "/images/Belo Men/10.jpg",
+      "/images/Belo Men/11.jpg",
+      "/images/Belo Men/12.jpg",
+      "/images/Belo Men/13.jpg",
+      "/images/Belo Men/14.jpg",
+      "/images/Belo Men/15.jpg",
+      "/images/Belo Men/16.jpg",
+      "/images/Belo Men/17.jpg",
+      "/images/Belo Men/18.jpg",
+      "/images/Belo Men/19.jpg",
+      "/images/Belo Men/20.jpg",
+      "/images/Belo Men/21.jpg",
+      "/images/Belo Men/22.jpg",
+      "/images/Belo Men/23.jpg"
     ],
-    images: ["/images/Ngiting Walang Katumbas.png"],
     isPortrait: false
   }
 ];
@@ -101,9 +113,6 @@ export default function Individual() {
     return () => observer.disconnect();
   }, []);
 
-  const featuredProject = individualProjects[0];
-  const secondaryProjects = individualProjects.slice(1);
-
   return (
     <section
       id="individual"
@@ -124,76 +133,39 @@ export default function Individual() {
       {/* ⚡ Mobile re-ordering: flex-col-reverse puts text (right col) FIRST on mobile, grid second */}
       <div className="max-w-7xl w-full flex flex-col-reverse lg:grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
-        {/* ─── LEFT COLUMN: GRID CARDS (PROJ 1, PROJ 2, PROJ 3) ─── */}
+        {/* ─── LEFT COLUMN: 2-PROJECT STACK (PROJ 1 & PROJ 2) ─── */}
         <div className="w-full lg:col-span-7 flex flex-col gap-6">
-
-          {/* FEATURED CARD: PROJ 1 */}
-          {featuredProject && (
+          {individualProjects.map((project) => (
             <div
+              key={project.id}
               onClick={() => {
-                setActiveProject(featuredProject);
+                setActiveProject(project);
                 setActiveImageIndex(0);
               }}
-              className="group relative w-full h-72 md:h-96 bg-[#141414] border border-white/10 hover:border-white/40 transition-all duration-500 cursor-pointer overflow-hidden p-8 flex flex-col justify-end shadow-2xl"
+              className="group relative w-full h-64 md:h-72 bg-[#141414] border border-white/10 hover:border-white/40 transition-all duration-500 cursor-pointer overflow-hidden p-8 flex flex-col justify-end shadow-2xl"
             >
-              {featuredProject.images[0] && (
+              {project.images[0] && (
                 <img
-                  src={typeof featuredProject.images[0] === 'string' ? featuredProject.images[0] : featuredProject.images[0].src}
-                  alt={featuredProject.title}
+                  src={typeof project.images[0] === 'string' ? project.images[0] : project.images[0].src}
+                  alt={project.title}
                   className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 group-hover:grayscale-0"
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
 
               <div className="relative z-20 space-y-2">
-                <h3 className="text-2xl md:text-4xl font-black uppercase tracking-wider text-white">
-                  {featuredProject.title}
+                <h3 className="text-2xl md:text-3xl font-black uppercase tracking-wider text-white">
+                  {project.title}
                 </h3>
                 <span className="text-[10px] text-white/50 tracking-[0.3em] font-mono block uppercase">
-                  {featuredProject.type}
+                  {project.type}
                 </span>
                 <p className="text-xs md:text-sm text-white/70 line-clamp-2 font-mono max-w-lg">
-                  {featuredProject.tagline}
+                  {project.tagline}
                 </p>
               </div>
             </div>
-          )}
-
-          {/* SECONDARY ROW: PROJ 2 & PROJ 3 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {secondaryProjects.map((project) => (
-              <div
-                key={project.id}
-                onClick={() => {
-                  setActiveProject(project);
-                  setActiveImageIndex(0);
-                }}
-                className="group relative w-full h-56 sm:h-64 bg-[#141414] border border-white/10 hover:border-white/40 transition-all duration-500 cursor-pointer overflow-hidden p-6 flex flex-col justify-end shadow-xl"
-              >
-                {project.images[0] && (
-                  <img
-                    src={typeof project.images[0] === 'string' ? project.images[0] : project.images[0].src}
-                    alt={project.title}
-                    className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 group-hover:grayscale-0"
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
-
-                <div className="relative z-20 space-y-1.5">
-                  <h4 className="text-lg md:text-xl font-bold uppercase tracking-wider text-white">
-                    {project.title}
-                  </h4>
-                  <span className="text-[10px] text-white/50 tracking-[0.3em] font-mono block uppercase">
-                    {project.type}
-                  </span>
-                  <p className="text-xs text-white/60 line-clamp-2 font-mono">
-                    {project.tagline}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
+          ))}
         </div>
 
         {/* ─── RIGHT COLUMN: INTRO NARRATIVE TEXT (Appears at TOP on mobile) ─── */}
@@ -244,7 +216,6 @@ export default function Individual() {
 
               {/* LEFT: SLIDER GALLERY VIEWPORT (Borderless & Uncropped) */}
               <div className="w-full lg:w-3/5 flex flex-col gap-4">
-                {/* ⚡ Removed border & bg-[#111] wrapper, using image's natural dimensions */}
                 <div className="w-full relative flex items-center justify-center overflow-hidden">
 
                   <img
