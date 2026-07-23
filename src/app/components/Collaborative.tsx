@@ -23,7 +23,7 @@ const collaborativeProjects: CollaborativeProject[] = [
         type: "SHORT FILM",
         role: "WRITER",
         tagline: "A girl playing the daisy game with the last flowers she can find, while the world around her slowly becomes unrecognizable.",
-        theme: [  
+        theme: [
             "A narrative short film that explores the destructive gravity of human activity on the natural world, and questions how far humanity will go, forcing viewers to realize how far humanity will push ecological boundaries before realizing our actions are violently rebounding upon us."
         ],
         youtubeId: "", // Swap this out with your real YouTube ID string
@@ -166,31 +166,34 @@ export default function Collaborative() {
                 </div>
 
                 {/* ─── PARENT WRAPPER FOR GRID + ROCKY BACKGROUND ─── */}
-                <div
-                    className="relative w-full py-12"
-                    style={{ paddingTop: "120px" }} /* ⚡ Moved spacing here so it doesn't offset the grid calculations */
-                >
+                <div className="relative w-full py-12" style={{ paddingTop: "120px" }}>
+
+                    {/* ⚡ 1. ROCKY FORMATION BACKGROUND STRIP (Forces true full-bleed stretch) */}
+                    <div
+                        className="absolute pointer-events-none z-0 bg-black overflow-hidden transform-gpu max-w-none"
+                        style={{
+                            height: "220px",
+                            top: "90%",
+                            transform: "translateY(-50%)",
+                            /* BREAKOUT FORMULA: Ignores parent max-width limits */
+                            width: "100vw",
+                            left: "49%",
+                            marginLeft: "-50vw",
+                        }}
+                    >
+                        <img
+                            src="/images/Assets/rocky formation.png"
+                            alt="Canyon Horizon Background"
+                            decoding="sync"
+                            className="w-full h-full object-cover object-center opacity-25 filter grayscale mix-blend-luminosity transform-gpu"
+                        />
+
+                        {/* Top & Bottom Black Gradients for Smooth Fade */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none" />
+                    </div>
+
                     {/* ─── 3-COLUMN PROJECT GRID ─── */}
                     <div className="relative z-10 w-full grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-
-                        {/* 1. ROCKY FORMATION BACKGROUND STRIP (Lowered to cut through cards) */}
-                        <div
-                            className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none -z-10 bg-black overflow-hidden"
-                            style={{
-                                width: "100vw",
-                                height: "220px",
-                                top: "90%"
-                            }}
-                        >
-                            <img
-                                src="/images/Assets/rocky formation.png"
-                                alt="Canyon Horizon Background"
-                                className="w-full h-full object-cover object-center opacity-25 filter grayscale mix-blend-luminosity"
-                            />
-
-                            {/* Top & Bottom Black Gradients for Smooth Fade */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none" />
-                        </div>
 
                         {/* ─── PROJECT CARDS ─── */}
                         {collaborativeProjects.map((project) => {
@@ -207,6 +210,7 @@ export default function Collaborative() {
                                         <img
                                             src={project.thumbnail}
                                             alt={project.title}
+                                            decoding="sync"
                                             className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 group-hover:grayscale-0"
                                         />
                                     )}

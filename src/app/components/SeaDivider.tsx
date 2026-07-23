@@ -7,18 +7,31 @@ export default function SeaDivider() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (!containerRef.current) return;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!containerRef.current) {
+            ticking = false;
+            return;
+          }
 
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+          const rect = containerRef.current.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
 
-      // Calculate how far the divider is through the viewport (0 = entering bottom, 1 = leaving top)
-      const totalDistance = windowHeight + rect.height;
-      const currentPosition = windowHeight - rect.top;
-      
-      const progress = Math.min(Math.max(currentPosition / totalDistance, 0), 1);
-      setScrollProgress(progress);
+          // Calculate how far the divider is through the viewport (0 = entering bottom, 1 = leaving top)
+          const totalDistance = windowHeight + rect.height;
+          const currentPosition = windowHeight - rect.top;
+          
+          const progress = Math.min(Math.max(currentPosition / totalDistance, 0), 1);
+          setScrollProgress(progress);
+
+          ticking = false;
+        });
+
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -35,7 +48,8 @@ export default function SeaDivider() {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full bg-black pointer-events-none select-none"
+      /* Added overflow-hidden below to clip elements moving off-screen */
+      className="relative w-full bg-black pointer-events-none select-none overflow-hidden"
       style={{
         paddingTop: "120px",    /* Adjust spacing above divider */
       }}
@@ -48,7 +62,8 @@ export default function SeaDivider() {
         <img
           src="/images/Assets/shore.JPG"
           alt="Harbor Background"
-          className="w-full h-full object-cover object-bottom opacity-35 filter grayscale mix-blend-luminosity"
+          decoding="sync"
+          className="w-full h-full object-cover object-bottom opacity-100 transform-gpu"
         />
 
         {/* Top & Bottom Black Gradients for Smooth Fade */}
@@ -59,6 +74,8 @@ export default function SeaDivider() {
       <img
         src="/images/Assets/Light house.png"
         alt="Lighthouse Accent"
+        decoding="sync"
+        className="transform-gpu will-change-transform"
         style={{
           height: "300px",  /* Locked height */
           width: "auto",

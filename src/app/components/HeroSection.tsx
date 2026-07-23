@@ -12,26 +12,42 @@ const HeroSection = () => {
   const fullScriptText = "A chaotic sea of moving faces. Loud. Relentless.\n\nAmidst the heavy friction of the rush hour crowd, MELANIE sits completely still, quietly watching and capturing the raw, unfiltered realities of being human in this unruly world.";
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (!containerRef.current) return;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!containerRef.current) {
+            ticking = false;
+            return;
+          }
 
-      const rect = containerRef.current.getBoundingClientRect();
-      const totalHeight = containerRef.current.scrollHeight - window.innerHeight - 600;
+          const rect = containerRef.current.getBoundingClientRect();
+          const totalHeight = containerRef.current.scrollHeight - window.innerHeight - 600;
 
-      // Calculate overall container scroll progress (0 to 1)
-      const progress = Math.min(Math.max(-rect.top / totalHeight, 0), 1);
-      setScrollProgress(progress);
+          // Calculate overall container scroll progress (0 to 1)
+          const progress = Math.min(Math.max(-rect.top / totalHeight, 0), 1);
+          setScrollProgress(progress);
 
-      // Text typing timeline: starts AFTER the images finish appearing and canvas blurs (0.7 -> 1.0)
-      const textStartProgress = 0.7;
+          // Text typing timeline: starts AFTER the images finish appearing and canvas blurs (0.7 -> 1.0)
+          const textStartProgress = 0.7;
 
-      if (progress < textStartProgress) {
-        setTypedText("");
-      } else {
-        const textProgress = (progress - textStartProgress) / (1 - textStartProgress);
-        const totalChars = fullScriptText.length;
-        const charsToDisplay = Math.floor(textProgress * totalChars);
-        setTypedText(fullScriptText.slice(0, charsToDisplay));
+          if (progress < textStartProgress) {
+            setTypedText("");
+          } else {
+            const textProgress = (progress - textStartProgress) / (1 - textStartProgress);
+            const totalChars = fullScriptText.length;
+            const charsToDisplay = Math.floor(textProgress * totalChars);
+
+            // Only update text state if the visible character count actually changed
+            const newText = fullScriptText.slice(0, charsToDisplay);
+            setTypedText((prev) => (prev !== newText ? newText : prev));
+          }
+
+          ticking = false;
+        });
+
+        ticking = true;
       }
     };
 
@@ -39,134 +55,129 @@ const HeroSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Dynamic blur applied safely so it doesn't taint your base color or transparency
-  const getBlurStyle = () => {
-    if (scrollProgress < 0.6) return "blur(0px)";
-    if (scrollProgress >= 0.7) return "blur(1.5px)";
-    const ratio = (scrollProgress - 0.6) / 0.1;
-    return `blur(${ratio * 1.5}px)`;
-  };
-
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[450vh] bg-black select-none font-mono"
-      style={{ fontFamily: "'Courier Prime', 'Courier New', monospace" }}
+      className="relative w-full h-[450vh] bg-black select-none font-mono transform-gpu"
+      style={{
+        fontFamily: "'Courier Prime', 'Courier New', monospace",
+        contentVisibility: "visible", // Forces the browser to keep it painted in RAM
+      }}
     >
-      {/* STICKY STAGE: Holds the viewport static while scroll drives the content */}
-      <div className="sticky top-0 left-0 w-full h-[56.25vw] max-h-screen min-h-[40vh] md:h-screen overflow-hidden flex items-start justify-center">
+      {/* STICKY STAGE */}
+      <div
+        className="sticky top-0 left-0 w-full h-[56.25vw] max-h-screen min-h-[40vh] md:h-screen overflow-hidden flex items-start justify-center transform-gpu"
+        style={{
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
+          transform: "translate3d(0, 0, 0)", // Forces permanent 3D layer caching in GPU
+        }}
+      >
 
         {/* =========================================================
-            LAYER 1: YOUR ORIGINAL UNTOUCHED BACKGROUND LAYER
+            LAYER 1: BACKGROUND LAYER WITH HARDWARE ACCELERATED BLUR
             ========================================================= */}
         <div
-          className="absolute inset-0 z-0 bg-[#231F20] flex items-start justify-center p-0"
-          style={{ filter: getBlurStyle() }}
+          className={`absolute inset-0 z-0 bg-[#231F20] flex items-start justify-center p-0 transform-gpu transition-all duration-300 ${scrollProgress >= 0.7
+            ? "blur-[1.5px]"
+            : scrollProgress >= 0.6
+              ? "blur-[0.8px]"
+              : "blur-0"
+            }`}
         >
-          {/* THE BASE IMAGE - Exactly as it was in your initial code */}
+          {/* BASE IMAGE */}
           <img
             src="/images/Mosi/Base.jpg"
             alt="The Perfect Timing"
-            className="w-full h-full object-cover object-top contrast-100 brightness-50 object-center md:object-[center_35%]"
+            decoding="sync"
+            className="w-full h-full object-cover object-top contrast-100 brightness-50 object-center md:object-[center_35%] transform-gpu will-change-transform"
           />
 
-          {/* =========================================================
-              SCROLL APPEARANCES: Placed to perfectly lock layout frames
-              ========================================================= */}
-
-          {/* Image 1.jpg (Appears at 5% scroll) */}
+          {/* LAYERED IMAGE APPEARANCES */}
           <img
             src="/images/Mosi/1.png"
             alt="Layer 1"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
             style={{ opacity: scrollProgress > 0.05 ? 1 : 0 }}
           />
 
-          {/* Image 2.jpg (Appears at 10% scroll) */}
           <img
             src="/images/Mosi/2.png"
             alt="Layer 2"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
             style={{ opacity: scrollProgress > 0.10 ? 1 : 0 }}
           />
 
-          {/* Image 3.jpg (Appears at 15% scroll) */}
           <img
             src="/images/Mosi/3.png"
             alt="Layer 3"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
             style={{ opacity: scrollProgress > 0.15 ? 1 : 0 }}
           />
 
-          {/* Image 4.jpg (Appears at 20% scroll) */}
           <img
             src="/images/Mosi/4.png"
             alt="Layer 4"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
             style={{ opacity: scrollProgress > 0.20 ? 1 : 0 }}
           />
 
-          {/* Image 5.jpg (Appears at 25% scroll) */}
           <img
             src="/images/Mosi/5.png"
             alt="Layer 5"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
             style={{ opacity: scrollProgress > 0.25 ? 1 : 0 }}
           />
 
-          {/* Image 6.jpg (Appears at 30% scroll) */}
           <img
             src="/images/Mosi/6.png"
             alt="Layer 6"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
             style={{ opacity: scrollProgress > 0.30 ? 1 : 0 }}
           />
 
-          {/* Image 7.jpg (Appears at 35% scroll) */}
           <img
             src="/images/Mosi/7.png"
             alt="Layer 7"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
             style={{ opacity: scrollProgress > 0.35 ? 1 : 0 }}
           />
 
-          {/* Image 8.jpg (Appears at 40% scroll) */}
           <img
             src="/images/Mosi/8.png"
             alt="Layer 8"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
             style={{ opacity: scrollProgress > 0.40 ? 1 : 0 }}
           />
 
-          {/* AGAIN Image 7.jpg (Appears at 35% scroll) */}
-          <img
-            src="/images/Mosi/7.png"
-            alt="Layer 7"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
-            style={{ opacity: scrollProgress > 0.40 ? 1 : 0 }}
-          />
-
-          {/* Image 9.jpg (Appears at 45% scroll) */}
           <img
             src="/images/Mosi/9.png"
             alt="Layer 9"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 pointer-events-none"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
             style={{ opacity: scrollProgress > 0.45 ? 1 : 0 }}
           />
         </div>
 
         {/* LAYER 2: CINEMATIC GRADIENT OVERLAY & TEXT */}
         <div
-          className="absolute inset-0 z-10 flex items-center bg-gradient-to-r from-[#231F20]/95 via-[#231F20]/80 md:via-[#231F20]/70 to-transparent p-4 sm:p-8 md:p-24 overflow-y-auto transition-opacity duration-700"
+          className="absolute inset-0 z-10 flex items-center bg-gradient-to-r from-[#231F20]/95 via-[#231F20]/80 md:via-[#231F20]/70 to-transparent p-4 sm:p-8 md:p-24 overflow-y-auto transition-opacity duration-500 transform-gpu"
           style={{
             opacity: scrollProgress >= 0.7 ? 1 : 0,
             pointerEvents: scrollProgress >= 0.7 ? "auto" : "none"
           }}
         >
-          {/* Added max-h-full and py-8 so if a screen gets super short, the text won't overflow into a void */}
           <div className="max-w-xs sm:max-w-xl md:max-w-xl w-full text-[#F4F1EA] space-y-4 md:space-y-6 max-h-full py-6">
 
-            {/* SIGNATURE IMAGE LOGO & BRAND BRAND TAGLINE */}
+            {/* LOGO & BRAND TAGLINE */}
             <div className="border-b border-white/20 pb-4 mb-4 block">
               <img
                 src="/images/More Revised Personal Brand Logo.png"
@@ -175,31 +186,26 @@ const HeroSection = () => {
               />
             </div>
 
-            {/* Slugline Header: Responsive text scaling */}
+            {/* Slugline Header */}
             <h2 className="font-bold text-sm sm:text-base md:text-xl tracking-widest uppercase text-white/40 font-mono">
               OBSERVER FIRST, WRITER SECOND
             </h2>
 
-            {/* Scroll-Generated Screenplay Body Text (Restored to Left-Aligned) */}
+            {/* Scroll-Generated Screenplay Body Text */}
             <div className="text-xs sm:text-sm md:text-base leading-relaxed tracking-wide font-mono space-y-4 md:space-y-6 max-w-xl w-full">
-              {typedText.split("\n\n").map((paragraph, pIndex) => {
-                return (
-                  /* Changed text-center back to text-left */
-                  <p key={pIndex} className="whitespace-pre-wrap break-words text-left">
-                    {paragraph}
-
-                    {/* Keeps your pulsing inline-block typing cursor on the very last character */}
-                    {pIndex === typedText.split("\n\n").length - 1 && typedText.length < fullScriptText.length && (
-                      <span className="inline-block w-2 h-4 md:w-2.5 md:h-5 bg-[#F4F1EA] ml-1 animate-pulse align-middle" />
-                    )}
-                  </p>
-                );
-              })}
+              {typedText.split("\n\n").map((paragraph, pIndex) => (
+                <p key={pIndex} className="whitespace-pre-wrap break-words text-left">
+                  {paragraph}
+                  {pIndex === typedText.split("\n\n").length - 1 && typedText.length < fullScriptText.length && (
+                    <span className="inline-block w-2 h-4 md:w-2.5 md:h-5 bg-[#F4F1EA] ml-1 animate-pulse align-middle" />
+                  )}
+                </p>
+              ))}
             </div>
 
-            {/* CALL TO ACTION BUTTON: Fluid margin spacing */}
+            {/* CALL TO ACTION BUTTON */}
             <div
-              className="mt-6 md:mt-12 transition-all duration-700 ease-in-out"
+              className="mt-6 md:mt-12 transition-all duration-500 ease-in-out transform-gpu"
               style={{
                 opacity: typedText.length === fullScriptText.length ? 1 : 0,
                 transform: typedText.length === fullScriptText.length ? 'translateY(0)' : 'translateY(10px)',
@@ -221,9 +227,7 @@ const HeroSection = () => {
         </div>
 
       </div>
-
     </div>
-
   );
 };
 
