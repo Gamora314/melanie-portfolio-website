@@ -170,7 +170,7 @@ export default function AboutSection() {
                 >
                     {/* LEFT COMPONENT: PORTRAIT PANEL */}
                     <div className="w-full h-full relative border-r border-white/5 flex items-center justify-center p-8 md:p-12 bg-[#030303]">
-                        <div className="w-full max-w-xs md:max-w-sm aspect-[3/4] border border-white/10 bg-[#0c0c0c] relative overflow-hidden shadow-2xl animate-float">
+                        <div className="w-full max-w-sm md:max-w-md aspect-[3/4] border border-white/10 bg-[#0c0c0c] relative overflow-hidden shadow-2xl animate-float">
                             <img
                                 src="/images/Portrait Manifesto.png"
                                 alt="Melanie Cabico Casabar Portrait"

@@ -134,7 +134,8 @@ export default function Individual() {
       <div className="max-w-7xl w-full flex flex-col-reverse lg:grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
         {/* ─── LEFT COLUMN: 2-PROJECT STACK (PROJ 1 & PROJ 2) ─── */}
-        <div className="w-full lg:col-span-7 flex flex-col gap-6">
+        <div className="w-full lg:col-span-7 flex flex-col gap-6"
+        >
           {individualProjects.map((project) => (
             <div
               key={project.id}
@@ -142,13 +143,13 @@ export default function Individual() {
                 setActiveProject(project);
                 setActiveImageIndex(0);
               }}
-              className="group relative w-full h-64 md:h-72 bg-[#141414] border border-white/10 hover:border-white/40 transition-all duration-500 cursor-pointer overflow-hidden p-8 flex flex-col justify-end shadow-2xl"
+              className="group relative w-full h-64 md:h-100 bg-[#141414] border border-white/10 hover:border-white/40 transition-all duration-500 cursor-pointer overflow-hidden p-8 flex flex-col justify-end shadow-2xl"
             >
               {project.images[0] && (
                 <img
                   src={typeof project.images[0] === 'string' ? project.images[0] : project.images[0].src}
                   alt={project.title}
-                  className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 group-hover:grayscale-0"
+                  className="absolute inset-0 w-full h-full object-cover opacity-100 group-hover:group-hover:scale-105 transition-all duration-700 group-hover:grayscale-0"
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
@@ -201,7 +202,7 @@ export default function Individual() {
           onClick={() => setActiveProject(null)}
         >
           <div
-            className="bg-[#0f0f0f] border border-white/15 w-full max-w-6xl max-h-[90vh] overflow-y-auto relative shadow-2xl p-6 md:p-12"
+            className="bg-[#0f0f0f] border border-white/15 w-full max-w-7xl max-h-[90vh] overflow-y-auto relative shadow-2xl p-6 md:p-12"
             onClick={(e) => e.stopPropagation()}
           >
             {/* CLOSE "X" BUTTON */}
@@ -273,7 +274,7 @@ export default function Individual() {
                         <div
                           key={idx}
                           onClick={() => setActiveImageIndex(idx)}
-                          className={`h-16 aspect-video flex-shrink-0 border cursor-pointer overflow-hidden transition-all ${idx === activeImageIndex
+                          className={`h-20 aspect-video flex-shrink-0 border cursor-pointer overflow-hidden transition-all ${idx === activeImageIndex
                               ? "border-white opacity-100 scale-95"
                               : "border-white/10 opacity-50 hover:opacity-100"
                             }`}

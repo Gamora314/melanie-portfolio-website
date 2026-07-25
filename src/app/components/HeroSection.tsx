@@ -5,12 +5,15 @@ import Link from "next/link";
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [typedText, setTypedText] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isVideoEnded, setIsVideoEnded] = useState(false);
 
   // The screenplay text with a clean structural double spacing break
   const fullScriptText = "A chaotic sea of moving faces. Loud. Relentless.\n\nAmidst the heavy friction of the rush hour crowd, MELANIE sits completely still, quietly watching and capturing the raw, unfiltered realities of being human in this unruly world.";
 
+  // 1. Handle Scroll Calculations
   useEffect(() => {
     let ticking = false;
 
@@ -29,8 +32,8 @@ const HeroSection = () => {
           const progress = Math.min(Math.max(-rect.top / totalHeight, 0), 1);
           setScrollProgress(progress);
 
-          // Text typing timeline: starts AFTER the images finish appearing and canvas blurs (0.7 -> 1.0)
-          const textStartProgress = 0.7;
+          // Typing starts as soon as user begins scrolling down (e.g. progress > 0.05)
+          const textStartProgress = 0.05;
 
           if (progress < textStartProgress) {
             setTypedText("");
@@ -39,7 +42,6 @@ const HeroSection = () => {
             const totalChars = fullScriptText.length;
             const charsToDisplay = Math.floor(textProgress * totalChars);
 
-            // Only update text state if the visible character count actually changed
             const newText = fullScriptText.slice(0, charsToDisplay);
             setTypedText((prev) => (prev !== newText ? newText : prev));
           }
@@ -55,129 +57,74 @@ const HeroSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 2. Handle Video Replay on Tab Refresh / Refocus
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && videoRef.current) {
+        setIsVideoEnded(false);
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch(() => {});
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  // Show overlay/logo if video finishes OR user starts scrolling
+  const showOverlay = isVideoEnded || scrollProgress > 0.05;
+
   return (
     <div
       ref={containerRef}
       className="relative w-full h-[450vh] bg-black select-none font-mono transform-gpu"
       style={{
         fontFamily: "'Courier Prime', 'Courier New', monospace",
-        contentVisibility: "visible", // Forces the browser to keep it painted in RAM
+        contentVisibility: "visible",
       }}
     >
       {/* STICKY STAGE */}
       <div
-        className="sticky top-0 left-0 w-full h-[56.25vw] max-h-screen min-h-[40vh] md:h-screen overflow-hidden flex items-start justify-center transform-gpu"
+        className="sticky top-0 left-0 w-full h-screen h-[100dvh] overflow-hidden flex items-center justify-center transform-gpu"
         style={{
           backfaceVisibility: "hidden",
           WebkitBackfaceVisibility: "hidden",
-          transform: "translate3d(0, 0, 0)", // Forces permanent 3D layer caching in GPU
+          transform: "translate3d(0, 0, 0)",
         }}
       >
 
-        {/* =========================================================
-            LAYER 1: BACKGROUND LAYER WITH HARDWARE ACCELERATED BLUR
-            ========================================================= */}
+        {/* LAYER 1: MOTION SIGNATURE VIDEO */}
         <div
-          className={`absolute inset-0 z-0 bg-[#231F20] flex items-start justify-center p-0 transform-gpu transition-all duration-300 ${scrollProgress >= 0.7
-            ? "blur-[1.5px]"
-            : scrollProgress >= 0.6
-              ? "blur-[0.8px]"
-              : "blur-0"
-            }`}
+          className={`absolute inset-0 z-0 bg-[#231F20] flex items-start justify-center p-0 transform-gpu transition-all duration-500 ${
+            scrollProgress >= 0.3
+              ? "blur-[1.5px]"
+              : scrollProgress >= 0.15
+                ? "blur-[0.8px]"
+                : "blur-0"
+          }`}
         >
-          {/* BASE IMAGE */}
-          <img
-            src="/images/Mosi/Base.jpg"
-            alt="The Perfect Timing"
-            decoding="sync"
-            className="w-full h-full object-cover object-top contrast-100 brightness-50 object-center md:object-[center_35%] transform-gpu will-change-transform"
-          />
-
-          {/* LAYERED IMAGE APPEARANCES */}
-          <img
-            src="/images/Mosi/1.png"
-            alt="Layer 1"
-            decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
-            style={{ opacity: scrollProgress > 0.05 ? 1 : 0 }}
-          />
-
-          <img
-            src="/images/Mosi/2.png"
-            alt="Layer 2"
-            decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
-            style={{ opacity: scrollProgress > 0.10 ? 1 : 0 }}
-          />
-
-          <img
-            src="/images/Mosi/3.png"
-            alt="Layer 3"
-            decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
-            style={{ opacity: scrollProgress > 0.15 ? 1 : 0 }}
-          />
-
-          <img
-            src="/images/Mosi/4.png"
-            alt="Layer 4"
-            decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
-            style={{ opacity: scrollProgress > 0.20 ? 1 : 0 }}
-          />
-
-          <img
-            src="/images/Mosi/5.png"
-            alt="Layer 5"
-            decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
-            style={{ opacity: scrollProgress > 0.25 ? 1 : 0 }}
-          />
-
-          <img
-            src="/images/Mosi/6.png"
-            alt="Layer 6"
-            decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
-            style={{ opacity: scrollProgress > 0.30 ? 1 : 0 }}
-          />
-
-          <img
-            src="/images/Mosi/7.png"
-            alt="Layer 7"
-            decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
-            style={{ opacity: scrollProgress > 0.35 ? 1 : 0 }}
-          />
-
-          <img
-            src="/images/Mosi/8.png"
-            alt="Layer 8"
-            decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
-            style={{ opacity: scrollProgress > 0.40 ? 1 : 0 }}
-          />
-
-          <img
-            src="/images/Mosi/9.png"
-            alt="Layer 9"
-            decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 pointer-events-none transform-gpu will-change-opacity"
-            style={{ opacity: scrollProgress > 0.45 ? 1 : 0 }}
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            onEnded={() => setIsVideoEnded(true)}
+            src="/images/moSig.mp4" 
+            className="w-full h-full object-cover object-top object-center md:object-[center_35%] transform-gpu will-change-transform"
           />
         </div>
 
-        {/* LAYER 2: CINEMATIC GRADIENT OVERLAY & TEXT */}
+        {/* LAYER 2: CINEMATIC OVERLAY & CONTENT */}
         <div
-          className="absolute inset-0 z-10 flex items-center bg-gradient-to-r from-[#231F20]/95 via-[#231F20]/80 md:via-[#231F20]/70 to-transparent p-4 sm:p-8 md:p-24 overflow-y-auto transition-opacity duration-500 transform-gpu"
+          className="absolute inset-0 z-10 flex items-center bg-gradient-to-r from-[#231F20]/95 via-[#231F20]/80 md:via-[#231F20]/70 to-transparent p-4 sm:p-8 md:p-24 overflow-y-auto transition-opacity duration-700 transform-gpu"
           style={{
-            opacity: scrollProgress >= 0.7 ? 1 : 0,
-            pointerEvents: scrollProgress >= 0.7 ? "auto" : "none"
+            opacity: showOverlay ? 1 : 0,
+            pointerEvents: showOverlay ? "auto" : "none"
           }}
         >
           <div className="max-w-xs sm:max-w-xl md:max-w-xl w-full text-[#F4F1EA] space-y-4 md:space-y-6 max-h-full py-6">
 
-            {/* LOGO & BRAND TAGLINE */}
+            {/* LOGO & BRAND TAGLINE (Appears immediately when video ends) */}
             <div className="border-b border-white/20 pb-4 mb-4 block">
               <img
                 src="/images/More Revised Personal Brand Logo.png"
@@ -186,12 +133,12 @@ const HeroSection = () => {
               />
             </div>
 
-            {/* Slugline Header */}
+            {/* Slugline Header (Appears immediately when video ends) */}
             <h2 className="font-bold text-sm sm:text-base md:text-xl tracking-widest uppercase text-white/40 font-mono">
-              OBSERVER FIRST, WRITER SECOND
+              STORY FIRST, TELLER SECOND
             </h2>
 
-            {/* Scroll-Generated Screenplay Body Text */}
+            {/* Scroll-Generated Screenplay Body Text (Only types as user scrolls down) */}
             <div className="text-xs sm:text-sm md:text-base leading-relaxed tracking-wide font-mono space-y-4 md:space-y-6 max-w-xl w-full">
               {typedText.split("\n\n").map((paragraph, pIndex) => (
                 <p key={pIndex} className="whitespace-pre-wrap break-words text-left">
@@ -207,9 +154,9 @@ const HeroSection = () => {
             <div
               className="mt-6 md:mt-12 transition-all duration-500 ease-in-out transform-gpu"
               style={{
-                opacity: typedText.length === fullScriptText.length ? 1 : 0,
-                transform: typedText.length === fullScriptText.length ? 'translateY(0)' : 'translateY(10px)',
-                pointerEvents: typedText.length === fullScriptText.length ? 'auto' : 'none'
+                opacity: typedText.length === fullScriptText.length && typedText.length > 0 ? 1 : 0,
+                transform: typedText.length === fullScriptText.length && typedText.length > 0 ? 'translateY(0)' : 'translateY(10px)',
+                pointerEvents: typedText.length === fullScriptText.length && typedText.length > 0 ? 'auto' : 'none'
               }}
             >
               <Link

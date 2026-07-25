@@ -203,7 +203,7 @@ export default function Collaborative() {
                                 <div
                                     key={project.id}
                                     onClick={() => handleOpenModal(project)}
-                                    className="group relative w-full aspect-[2/3] max-h-[550px] bg-[#141414] border border-white/10 hover:border-white/40 transition-all duration-500 cursor-pointer overflow-hidden p-6 md:p-8 flex flex-col justify-end shadow-2xl"
+                                    className="group relative w-full aspect-[2/3] max-h-[600px] bg-[#141414] border border-white/10 hover:border-white/40 transition-all duration-500 cursor-pointer overflow-hidden p-6 md:p-8 flex flex-col justify-end shadow-2xl"
                                 >
                                     {/* Poster Background Image */}
                                     {project.thumbnail && (
@@ -211,7 +211,7 @@ export default function Collaborative() {
                                             src={project.thumbnail}
                                             alt={project.title}
                                             decoding="sync"
-                                            className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 group-hover:grayscale-0"
+                                            className="absolute inset-0 w-full h-full object-cover opacity-100 group-hover:group-hover:scale-105 transition-all duration-700 group-hover:grayscale-0"
                                         />
                                     )}
 
@@ -245,7 +245,7 @@ export default function Collaborative() {
                     onClick={() => setActiveProject(null)}
                 >
                     <div
-                        className="bg-[#0f0f0f] border border-white/15 w-full max-w-6xl max-h-[90vh] overflow-y-auto relative shadow-2xl p-6 md:p-12"
+                        className="bg-[#0f0f0f] border border-white/15 w-full max-w-7xl max-h-[90vh] overflow-y-auto relative shadow-2xl p-6 md:p-12"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* CLOSE "X" BUTTON */}
@@ -341,7 +341,7 @@ export default function Collaborative() {
                                             <div
                                                 key={idx}
                                                 onClick={() => setCurrentSlideIndex(idx)}
-                                                className={`h-16 aspect-video flex-shrink-0 border cursor-pointer overflow-hidden transition-all ${idx === currentSlideIndex
+                                                className={`h-20 aspect-video flex-shrink-0 border cursor-pointer overflow-hidden transition-all ${idx === currentSlideIndex
                                                     ? "border-white opacity-100 scale-95"
                                                     : "border-white/10 opacity-50 hover:opacity-100"
                                                     }`}
